@@ -49,7 +49,7 @@ const MyComponent = () => {
 
 	return (
 		<>
-			{fills.map((fill, index) => (
+			{colors.map((fill, index) => (
 				<li key={index}>{fill.color}</li>
 			))}
 			<button onClick={refreshColors}>Refresh</button>
