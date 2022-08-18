@@ -2,7 +2,13 @@
 
 A small library that simplies communication between a Figma plugin code and its UI code. The methods on one side are exposed to the other as methods that return promises and encapsulate all of the details of the inter-frame messaging.
 
+* NPM: [@travisspomer/promising-artist](https://www.npmjs.com/package/@travisspomer/promising-artist)
+
 ## Usage
+
+```sh
+npm i @travisspomer/promising-artist
+```
 
 Both sides need to call `PromisingArtist.collab`, or its React equivalent `useCollab`, before either side calls methods on the other. If using TypeScript, you should also make `interface`s for each side's methods.
 
