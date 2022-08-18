@@ -1,0 +1,26 @@
+name: Continuous build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out the code from GitHub
+      uses: actions/checkout@v3
+
+    - name: Install Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+
+    - name: Build project
+      # Normally you'd "npm install" or "npm ci" here too, but Tidbits has no dependencies.
+      run: |
+        npm run build --if-present
