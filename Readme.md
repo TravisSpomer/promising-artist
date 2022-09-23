@@ -2,7 +2,7 @@
 
 A small library that simplies communication between a Figma plugin code and its UI code. The methods on one side are exposed to the other as methods that return promises and encapsulate all of the details of the inter-frame messaging.
 
-* NPM: [@travisspomer/promising-artist](https://www.npmjs.com/package/@travisspomer/promising-artist) <br />[![*](https://badgen.net/bundlephobia/minzip/@travisspomer/promising-artist@latest)](https://bundlephobia.com/package/@travisspomer/promising-artist@latest)
+* NPM: [@travisspomer/promising-artist](https://www.npmjs.com/package/@travisspomer/promising-artist) <br />[![](https://badgen.net/bundlephobia/minzip/@travisspomer/promising-artist@latest)](https://bundlephobia.com/package/@travisspomer/promising-artist@latest)
 
 ## Usage
 
