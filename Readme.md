@@ -91,6 +91,60 @@ In the above example, the implementation of `return42` returns `number` and its 
 
 In TypeScript, the interfaces for your methods can be called anything you want; `UIMethods` and `PluginMethods` are just suggestions.
 
+### Using React state in `useCollab`
+
+When using `useCollab` in React, there's a little gotcha: it might seem like your state isn't getting updated properly.
+
+```ts
+// This will not work like you'd expect
+const [screen, setScreen] = useState("loading")
+
+const Plugin = PromisingArtist.useCollab<UIMethods, PluginMethods>(
+	onLoadCompleted() {
+		setScreen("ready")
+	}
+)
+
+return { screen }
+```
+
+Due to the way that JavaScript captures variables in functions, what seems like perfectly normal code won't work: it will appear that `screen` won't get updated by that `setScreen` call. Basically, you need `useRef` to work around the capture problem, but you need `useState` to still re-render when the value changes.
+
+Here's how you can work around that:
+
+```ts
+function useRefState<S extends Exclude<any, () => void>>(
+	initialState: S | (() => S)
+): [state: { readonly current: S }, setState: (state: S) => void] {
+	if (typeof initialState === "function") initialState = (initialState as any)()
+	const [state, setState] = React.useReducer(
+		(newState: { current: { current: S } }, action: S) => {
+			newState.current.current = action
+			return { current: newState.current }
+		},
+		{ current: { current: initialState as S } }
+	)
+	return [state.current, setState]
+}
+```
+
+Then, use `useRefState` instead of `useState` any time you have state in your component that you want to use from your collab methods, and then access the state's `current` property like you would with `useRef`. Here's the corrected code example from before:
+
+```ts
+// This now works!
+const [screen, setScreen] = useRefState("loading") // ← Replace useState with useRefState
+
+const Plugin = PromisingArtist.useCollab<UIMethods, PluginMethods>(
+	onLoadCompleted() {
+		setScreen("ready")
+	}
+)
+
+return { screen.current } // ← Replace screen with screen.current
+```
+
+(You can use that `useRefState` function above in any other similar situation—it doesn't depend on Promising Artist in any way.)
+
 ---
 
 © 2022 Travis Spomer. Released under the [MIT license](license.txt) and provided as-is, and no warranties are made as to its functionality or suitability.
